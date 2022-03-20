@@ -8,6 +8,10 @@ the colour-echo directory to your path
 # Usage
 The command can be called with `cecho <args> [text]`
 
+### Example
+`cecho -f red -B hello colour echo!` returns
+<span style="color:red">**hello colour echo!**</span>.
+
 ### Arguments
 ```
 -h - Shows the help message
