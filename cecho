@@ -67,7 +67,7 @@ do
   esac
 done
 
-text=${@:$OPTIND:1}
+text=${@:$OPTIND}
 
 
 fgc=`$dir/helpers/colour-to-code.sh -f -c $fg`
