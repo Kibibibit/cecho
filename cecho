@@ -1,0 +1,101 @@
+#!/bin/bash
+
+
+usage(){
+  echo "Usage:"
+  echo "  $0 <args> text"
+  echo ""
+  echo "Options:"
+  echo "  -h       : Shows this help message"
+  echo "  -l       : Lists the possible colours"
+  echo "  -f colour: Sets the foreground colour of the text (defaults to white)"
+  echo "  -b colour: Sets the background colour of the text (defaults to black)"
+  echo "  -B       : Sets the text to bold"
+  echo "  -I       : Sets the text to italic"
+  echo "  -F       : Sets the text to faint"
+  echo "  -U       : Sets the text to underlined"
+  echo ""
+  exit
+}
+
+fg='white'
+bg='black'
+
+dir="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+
+if [[ ! "$PATH" == *"$dir"* ]]
+then
+  echo "Colour echo is not in your path! make sure to add $dir to your path"
+  exit
+fi
+
+extras=""
+
+while getopts "lhBIFUf:b:" opt
+do
+
+  case $opt in
+    f)
+      fg=$OPTARG >&2
+      ;;
+    b)
+      bg=$OPTARG >&2
+      ;;
+    B)
+      extras=$extras"1;"
+      ;;
+    I)
+      extras=$extras"3;"
+      ;;
+    F)
+      extras=$extras"2;"
+      ;;
+    U)
+      extras=$extras"4;"
+      ;;
+    l)
+      $dir/helpers/colour-to-code.sh -l
+      exit
+      ;;
+    h)
+      usage
+      ;;
+    \?)
+      usage
+      ;;
+  esac
+done
+
+text=${@:$OPTIND:1}
+
+
+fgc=`$dir/helpers/colour-to-code.sh -f -c $fg`
+bgc=`$dir/helpers/colour-to-code.sh -c $bg`
+
+if [ -z "$fgc" ]
+then
+    echo "Unrecognised foreground colour $fg!"
+    exit
+fi
+
+if [ -z "$bgc" ]
+then
+    echo "Unrecognised background colour $bg!"
+    exit
+fi
+
+if [ -z "$text" ]
+then
+    echo "No Text provided!"
+    usage
+fi
+
+if [ ! -z "$extras" ]
+then
+    extras=";$extras"
+    extras=${extras::-1}
+fi
+
+echo -e "\e[$fgc;${bgc}${extras}m$text\e[0m"
+exit 0
