@@ -3,7 +3,7 @@
 
 usage(){
   echo "Usage:"
-  echo "  $0 <args> text"
+  echo "  `basename $0` <args> text"
   echo ""
   echo "Options:"
   echo "  -h       : Shows this help message"
