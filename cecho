@@ -76,19 +76,20 @@ bgc=`$dir/helpers/colour-to-code.sh -c $bg`
 if [ -z "$fgc" ]
 then
     echo "Unrecognised foreground colour $fg!"
-    exit
+    exit 2
 fi
 
 if [ -z "$bgc" ]
 then
     echo "Unrecognised background colour $bg!"
-    exit
+    exit 2
 fi
 
 if [ -z "$text" ]
 then
     echo "No Text provided!"
     usage
+    exit 3
 fi
 
 if [ ! -z "$extras" ]
